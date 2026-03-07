@@ -1,10 +1,14 @@
 import { Link, Navigate } from 'react-router-dom';
 import React, { Fragment, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../actions/auth';
+import Spinner from '../layout/Spinner';
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const loading = useSelector((state) => state.auth.loading);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,12 +22,16 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    login({ email, password });
+    dispatch(login({ email, password }));
   };
 
   //Redirect if logged in
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />;
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
@@ -63,13 +71,4 @@ const Login = ({ login, isAuthenticated }) => {
   );
 };
 
-Login.propTypes = {
-  login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
-};
-
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
-
-export default connect(mapStateToProps, { login })(Login);
+export default Login;
