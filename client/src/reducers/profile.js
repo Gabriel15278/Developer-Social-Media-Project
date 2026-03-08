@@ -29,7 +29,7 @@ export default function profileReducer(state = initialState, action) {
         ...state,
         profile: null,
         repos: [],
-        loading: false,
+        loading: true,
       };
     default:
       return state;
