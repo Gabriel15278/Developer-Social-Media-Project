@@ -1,7 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { createProfile } from '../../actions/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -14,10 +14,11 @@ import {
   faInstagram,
 } from '@fortawesome/free-brands-svg-icons';
 
-const CreateProfile = () => {
+const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+  const { profile, loading } = useSelector((state) => state.profile);
 
   const validationSchema = Yup.object({
     status: Yup.string().required('Status is required'),
@@ -51,6 +52,7 @@ const CreateProfile = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -70,13 +72,36 @@ const CreateProfile = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  useEffect(() => {
+    if (!profile) dispatch(getCurrentProfile());
+
+    if (!loading && profile) {
+      const profileData = {
+        company: loading || !profile.company ? '' : profile.company,
+        website: loading || !profile.website ? '' : profile.website,
+        location: loading || !profile.location ? '' : profile.location,
+        status: loading || !profile.status ? '' : profile.status,
+        skills: loading || !profile.skills ? '' : profile.skills.join(','),
+        githubusername:
+          loading || !profile.githubusername ? '' : profile.githubusername,
+        bio: loading || !profile.bio ? '' : profile.bio,
+        twitter: loading || !profile.social ? '' : profile.social.twitter,
+        facebook: loading || !profile.social ? '' : profile.social.facebook,
+        linkedin: loading || !profile.social ? '' : profile.social.linkedin,
+        youtube: loading || !profile.social ? '' : profile.social.youtube,
+        instagram: loading || !profile.social ? '' : profile.social.instagram,
+      };
+      reset(profileData);
+    }
+  }, [loading, dispatch, profile, reset]);
+
   const onSubmit = (values) => {
-    dispatch(createProfile(values, navigate));
+    dispatch(createProfile(values, navigate, true));
   };
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Create Your Profile</h1>
+      <h1 className='large text-primary'>Edit Your Profile</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Let's get some information to make your
         profile stand out
@@ -281,4 +306,4 @@ const CreateProfile = () => {
   );
 };
 
-export default CreateProfile;
+export default EditProfile;

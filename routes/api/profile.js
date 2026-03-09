@@ -38,15 +38,15 @@ router.post(
   [
     auth,
     [
-      check('status', 'Status is required').not().isEmpty().escape(),
-      check('skills', 'Skills is required').not().isEmpty().escape(),
-      check('company').optional().escape(),
+      check('status', 'Status is required').not().isEmpty(),
+      check('skills', 'Skills is required').not().isEmpty(),
+      check('company').optional(),
       check('website', 'Valid URL required')
         .optional({ checkFalsy: true })
         .isURL(),
-      check('location').optional().escape(),
-      check('bio').optional().escape(),
-      check('githubusername').optional().escape(),
+      check('location').optional(),
+      check('bio').optional(),
+      check('githubusername').optional(),
       check('youtube', 'Valid URL required')
         .optional({ checkFalsy: true })
         .isURL(),
@@ -192,8 +192,8 @@ router.put(
   [
     auth,
     [
-      check('title', 'Title is required').not().isEmpty().escape(),
-      check('company', 'Company is required').not().isEmpty().escape(),
+      check('title', 'Title is required').not().isEmpty(),
+      check('company', 'Company is required').not().isEmpty(),
       check('from', 'From date is required').not().isEmpty(),
     ],
   ],
@@ -262,12 +262,9 @@ router.put(
   [
     auth,
     [
-      check('school', 'School is required').not().isEmpty().escape(),
-      check('degree', 'Degree is required').not().isEmpty().escape(),
-      check('fieldofstudy', 'Field of study is required')
-        .not()
-        .isEmpty()
-        .escape(),
+      check('school', 'School is required').not().isEmpty(),
+      check('degree', 'Degree is required').not().isEmpty(),
+      check('fieldofstudy', 'Field of study is required').not().isEmpty(),
       check('from', 'From date is required').not().isEmpty(),
     ],
   ],

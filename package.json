@@ -13,10 +13,8 @@
     "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "dependencies": {
-    "@fortawesome/react-fontawesome": "^3.2.0",
     "axios": "^1.13.5",
     "bcryptjs": "^3.0.3",
-    "config": "^4.4.1",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
@@ -27,8 +25,7 @@
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.2.2",
-    "request": "^2.88.2"
+    "mongoose": "^9.2.2"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
